@@ -12,7 +12,7 @@ const refs = {
   stopBtn: document.querySelector('button[data-action="stop"]'),
   body: document.querySelector('body'),
 }
-let intervalId = null;
+let intId = null;
 refs.stopBtn.disabled = true;
 
 
@@ -20,23 +20,25 @@ const randomIntegerFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const onStartBtnClick = () => { 
-  intervalId = setInterval(function() {
-    const randomIndex = randomIntegerFromInterval(0, colors.length - 1);
-    refs.body.style.backgroundColor = `${colors[randomIndex]}`;
-    refs.startBtn.disabled = true;
-    refs.stopBtn.disabled = false;
-  }, 1000);
+const changeBtnStatus = (add, remove) => {
+  refs.startBtn.disabled = add;
+  refs.stopBtn.disabled = remove;
 }
 
-const onStopBtnCLick = () => { 
-  clearInterval(intervalId);
-  refs.startBtn.disabled = false;
-  refs.stopBtn.disabled = true;
+const onStartBtnCLick = () => { 
+  intId = setInterval(() => {
+    const randomColor = randomIntegerFromInterval(0, colors.length - 1);
+    refs.body.style.backgroundColor = `${colors[randomColor]}`
+  }, 1000);
+  changeBtnStatus(true, false)
   
 }
+const onStopBtnCLick = () => { 
+  clearInterval(intId);
+changeBtnStatus(false, true)  
+}
 
-refs.startBtn.addEventListener('click', onStartBtnClick)
+refs.startBtn.addEventListener('click', onStartBtnCLick)
 refs.stopBtn.addEventListener('click', onStopBtnCLick)
     
   
